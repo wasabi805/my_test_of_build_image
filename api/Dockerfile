@@ -1,12 +1,6 @@
-FROM node:17-alpine
-
+FROM node:20-alpine
 WORKDIR /app
-
-COPY . .
-
+COPY  . .
 RUN npm install
-
 EXPOSE 4000
-# required for docker desktop port mapping
-
 CMD ["node", "app.js"]

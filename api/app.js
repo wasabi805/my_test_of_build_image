@@ -6,7 +6,7 @@ const app = express()
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.json([
+  res.send([
     {
       "id":"1",
       "title":"Book Review: The Bear & The Nightingale"
