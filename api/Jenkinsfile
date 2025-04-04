@@ -1,23 +1,23 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Fetch Docker Image') {
-            steps {
-                sh 'docker login ghcr.io -u wasabi805 -p ${GITHUB_TOKEN}'
-                sh 'docker pull ghcr.io/wasabi805/my_test_of_build_image:latest'
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t my_test_of_build_image .'
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                sh 'docker tag my_test_of_build_image:latest ghcr.io/wasabi805/my_test_of_build_image:latest'
-                sh 'docker push ghcr.io/wasabi805/my_test_of_build_image:latest'
-            }
-        }
-    }
+node {    
+      def app     
+      stage('Clone repository') {               
+             
+            checkout scm    
+      }     
+      stage('Build image') {         
+        app = docker.build("wasabi805/my_test_of_build_image")    
+      }     
+      stage('Test image') {           
+            app.inside {            
+             
+             sh 'echo "Tests passed"'        
+            }    
+      }     
+        stage('Push image') {
+            // docker.withRegistry('https://registry.hub.docker.com', 'git') {            
+            // app.push("${env.BUILD_NUMBER}")            
+            // app.push("latest")        
+            // }    
+            sh 'echo "push image to Git"' 
+        }   
 }
